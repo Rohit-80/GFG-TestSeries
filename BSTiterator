@@ -1,0 +1,65 @@
+
+class BSTiterator {
+     public :
+     
+     bool reverse = false;
+  
+     stack<Node*> st;
+     BSTiterator(Node * root, bool isreverse){
+        this->reverse = isreverse;
+         pushAll(root);
+     };
+     
+     int next(){
+         
+         auto it = st.top();
+         st.pop();
+         Node * root = it;
+         if(!reverse && root->right != NULL) pushAll(root->right);
+         if(reverse && root->left != NULL) pushAll(root->left);
+         
+         return it->data;
+     }
+     
+     void pushAll(Node * root){
+         if(reverse == false){
+            //  cout<<root->left->data<<endl;
+           while(root != NULL){
+                st.push(root);
+                root = root->left;
+           }
+         }else{
+            while(root != NULL){
+                st.push(root);
+                root = root->right;
+           } 
+         }
+     }
+     
+     
+     
+};
+
+
+class Solution{
+  public:
+    // root : the root Node of the given BST
+    // target : the target sum
+    int isPairPresent(struct Node *root, int target)
+    {
+          BSTiterator l(root,false);
+          BSTiterator r(root,true);
+          
+          int i = l.next(), j = r.next();
+            //  cout<<i<<" "<<j<<endl;
+          while(i < j){
+            //   cout<<i<<" "<<j<<endl;
+              if(i+j == target) return 1;
+              else if(i+j < target) i = l.next();
+              else j = r.next();
+          }
+          return 0;
+          
+          
+    }
+};
